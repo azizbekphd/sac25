@@ -6,8 +6,8 @@ import * as THREE from 'three'
 import { mapboxInterceptor } from './ImpactsUtils'
 
 export const Impacts = () => {
-  const colorTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.satellite/11/1517/859.png'))
-  const heightmapTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.terrain-rgb/11/1517/859.pngraw'))
+  const colorTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.satellite/14/12139/6875@2x.png'))
+  const heightmapTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.terrain-rgb/14/12139/6875@2x.pngraw'))
 
   return (
     <div style={{ height: '100vh' }}>
