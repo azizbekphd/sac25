@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import mkcert from 'vite-plugin-mkcert'
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
-    base: 'https://azizbekphd.github.io/sac25',
-    plugins: [react(), mkcert()],
+  base: '/sac25/',
+  plugins: [react()],
 })
