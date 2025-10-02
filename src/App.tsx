@@ -5,7 +5,8 @@ import { Impacts } from './routes/Impacts/Impacts'
 function App() {
   return <Routes>
     <Route path="/" element={ <p>1</p> } />
-    <Route path="/sac25/impact/" element={ <Impacts /> } />
+    <Route path="/sac25" element={ <p>2</p> } />
+    <Route path="/sac25/impact" element={ <Impacts /> } />
   </Routes>
 }
 
