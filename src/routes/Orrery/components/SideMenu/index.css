@@ -47,4 +47,6 @@
     writing-mode: vertical-lr;
     width: 2rem;
     height: 60px;
+    padding: unset !important;
+    border-radius: unset !important;
 }
