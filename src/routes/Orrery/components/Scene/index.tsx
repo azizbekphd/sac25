@@ -1,5 +1,5 @@
 import "./index.css"
-import { Canvas, extend } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { lazy, Suspense, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { TrajectoriesContext, TimeControlsContext, type TrajectoriesContextType } from "../../contexts";
@@ -10,7 +10,7 @@ import config from "../../globals/config.json";
 
 const Skybox = lazy(() => import("../Skybox/index.tsx"))
 
-extend({ OrbitControls });
+// extend({ OrbitControls }); // Not needed for @react-three/drei's OrbitControls
 
 const normalCamera = new PerspectiveCamera(50, 1, 0.000001, 1000);
 

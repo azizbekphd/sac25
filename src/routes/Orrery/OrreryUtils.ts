@@ -9,7 +9,7 @@ export class AnimationUtils {
         targetProperties: Record<string, unknown>,
         duration: number,
         easing: (k: number) => number = TWEEN.Easing.Quadratic.Out,
-    ): TWEEN.Tween {
+    ): TWEEN.Tween<Record<string, unknown>> {
         const tween = new TWEEN.Tween(currentProperties)
             .to(targetProperties, duration)
             .easing(easing)

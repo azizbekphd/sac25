@@ -1,44 +1,50 @@
-import { useMemo } from "react";
-import { shaderMaterial } from "@react-three/drei";
-import type { Object3DNode } from "@react-three/fiber";
-import { extend } from "@react-three/fiber";
-import type { Material, Side } from "three";
-import { AdditiveBlending, Color, FrontSide } from "three";
-import type { ColorRepresentation } from "three";
+import { useMemo, forwardRef, useImperativeHandle, useRef } from "react"
+import { shaderMaterial } from "@react-three/drei"
+import { extend } from "@react-three/fiber"
+import type { Side } from "three"
+import { AdditiveBlending, Color, FrontSide } from "three"
+import type { ColorRepresentation } from "three"
+
+type Props = {
+  falloff?: number
+  glowInternalRadius?: number
+  glowColor?: ColorRepresentation
+  glowSharpness?: number
+  side?: Side
+  depthTest?: boolean
+  depthWrite?: boolean
+}
 
 /**
- * FakeGlow material component by Anderson Mancini - Feb 2024.
- * TypeScript version by https://github.com/nirtamir2. Thank you!
- * @param {FakeGlowMaterialProps} props - Props for the FakeGlowMaterial component.
+ * FakeGlow material component with a forwardRef so you can access the material.
  */
-
 declare module "@react-three/fiber" {
   interface ThreeElements {
-    fakeGlowMaterial: Object3DNode<Material, typeof FakeGlowMaterial>;
+    fakeGlowMaterial: ThreeElements['shaderMaterial'] & Props
   }
 }
 
-type Props = {
-  falloff?: number;
-  glowInternalRadius?: number;
-  glowColor?: ColorRepresentation;
-  glowSharpness?: number;
-  side?: Side;
-  depthTest?: boolean;
-  depthWrite?: boolean;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _FakeGlowMaterial = forwardRef<any, Props>(function FakeGlowMaterial(
+  {
+    falloff = 0.1,
+    glowInternalRadius = 6,
+    glowColor = "#00ff00",
+    glowSharpness = 1,
+    side = FrontSide,
+    depthTest = true,
+    depthWrite = false,
+    ...restProps
+  },
+  ref
+) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const materialRef = useRef<any>(null)
 
-export const FakeGlowMaterial = ({
-  falloff = 0.1,
-  glowInternalRadius = 6,
-  glowColor = "#00ff00",
-  glowSharpness = 1,
-  side = FrontSide, // Adjust the PropTypes as per your requirements
-  depthTest = true,
-  depthWrite = false,
-}: Props) => {
-  const FakeGlowMaterial = useMemo(() => {
-    return shaderMaterial(
+  useImperativeHandle(ref, () => materialRef.current)
+
+  const Material = useMemo(() => {
+    const mat = shaderMaterial(
       {
         falloffAmount: falloff,
         glowInternalRadius,
@@ -47,7 +53,7 @@ export const FakeGlowMaterial = ({
         depthTest,
         depthWrite,
       },
-      /*GLSL */
+      // vertex shader
       `
       varying vec3 vPosition;
       varying vec3 vNormal;
@@ -57,8 +63,9 @@ export const FakeGlowMaterial = ({
         vec4 modelNormal = modelMatrix * vec4(normal, 0.0);
         vPosition = modelPosition.xyz;
         vNormal = modelNormal.xyz;
-      }`,
-      /*GLSL */
+      }
+      `,
+      // fragment shader
       `
       uniform vec3 glowColor;
       uniform float falloffAmount;
@@ -68,33 +75,35 @@ export const FakeGlowMaterial = ({
       varying vec3 vNormal;
       void main()
       {
-        // Normal
         vec3 normal = normalize(vNormal);
-        if(!gl_FrontFacing)
-            normal *= - 1.0;
+        if (!gl_FrontFacing) normal = -normal;
         vec3 viewDirection = normalize(cameraPosition - vPosition);
         float fresnel = dot(viewDirection, normal);
         fresnel = pow(fresnel, glowInternalRadius + 0.1);
-        float falloff = smoothstep(0., falloffAmount, fresnel);
+        float falloff = smoothstep(0.0, falloffAmount, fresnel);
         float fakeGlow = fresnel;
         fakeGlow += fresnel * glowSharpness;
         fakeGlow *= falloff;
-        gl_FragColor = vec4(clamp(glowColor * fresnel, 0., 1.0), clamp(fakeGlow, 0., 1.0));
-      }`,
-    );
-  }, [
-      falloff, glowInternalRadius, glowColor,
-      glowSharpness, depthTest, depthWrite,
-  ]);
+        gl_FragColor = vec4(clamp(glowColor * fresnel, 0.0, 1.0), clamp(fakeGlow, 0.0, 1.0));
+      }
+      `
+    )
+    return mat
+  }, [falloff, glowInternalRadius, glowColor, glowSharpness, depthTest, depthWrite])
 
-  extend({ FakeGlowMaterial });
+  // Ensure the custom material is registered with JSX
+  extend({ FakeGlowMaterial: Material })
 
   return (
     <fakeGlowMaterial
-      key={FakeGlowMaterial.key}
+      ref={materialRef}
       side={side}
       transparent={true}
       blending={AdditiveBlending}
+      {...restProps}
     />
-  );
-};
+  )
+})
+
+export const FakeGlowMaterial = _FakeGlowMaterial
+

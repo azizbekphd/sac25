@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, View } from '@react-three/drei'
-import React, { useRef, useState, useEffect, type RefObject, useMemo } from 'react'
+import { OrbitControls } from '@react-three/drei'
+import React, { useRef, useState, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import { Lights } from './Lights'
 

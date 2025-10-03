@@ -98,7 +98,7 @@ const SmallBodies: React.FC<SmallBodyOrbits> = memo(({ trajectories, timestamp }
         return {
             name: trajectory.name,
             points: trajectory.points,
-            model: trajectory.model ? `./models/asteroids/${trajectory.model}` : undefined,
+            model: trajectory.model ? `/models/asteroids/${trajectory.model}` : undefined,
             diameter: trajectory.diameter,
             scaleFactor: trajectory.scaleFactor,
             position,
@@ -130,7 +130,7 @@ const SmallBodies: React.FC<SmallBodyOrbits> = memo(({ trajectories, timestamp }
     })
 
     const handlePointerMove = useCallback((e: ThreeEvent<PointerEvent> | any) => {
-        const intersections = (e.intersections ?? [e.intersection] ?? [])
+        const intersections = (e.intersections ?? [e.intersection])
             .filter((i: THREE.Intersection) => {
                 const ratio = i.distance / i.distanceToRay!
                 return ratio > 100
@@ -162,7 +162,7 @@ const SmallBodies: React.FC<SmallBodyOrbits> = memo(({ trajectories, timestamp }
                 selected.setObjectId(hovered.objectId)
                 return
             }
-            const index = (e.intersections ?? [e.intersection] ?? [])
+            const index = (e.intersections ?? [e.intersection])
                 .sort((a: THREE.Intersection, b: THREE.Intersection) => a.distanceToRay! - b.distanceToRay!)[0].index!
             if (index === -1) return false
             selected.setObjectId(drawableTrajectories[index].id)
@@ -182,19 +182,25 @@ const SmallBodies: React.FC<SmallBodyOrbits> = memo(({ trajectories, timestamp }
                     ref={geometryRef}
                     count={positions.length / 3}
                     array={positions}
-                    itemSize={3} />
+                    itemSize={3}
+                    args={[positions, 3]}
+                />
                 <bufferAttribute
                     attach='attributes-color'
                     ref={materialRef}
                     count={colors.length / 3}
                     array={colors}
-                    itemSize={3} />
+                    itemSize={3}
+                    args={[colors, 3]}
+                />
                 <bufferAttribute
                     attach='attributes-size'
                     ref={sizeRef}
                     count={positions.length / 3}
                     array={sizes}
-                    itemSize={1} />
+                    itemSize={1}
+                    args={[sizes, 1]}
+                />
             </bufferGeometry>
             <shaderMaterial
                 fragmentShader={`

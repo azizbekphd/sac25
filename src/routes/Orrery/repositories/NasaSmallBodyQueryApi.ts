@@ -1,7 +1,7 @@
 import { Trajectory, TrajectoryType } from '../OrreryTypes'
-import config from '../globals/config.json'
-import { type FiltersContextType } from '../contexts';
-import { Filters } from '../contexts/FiltersContext';
+// import config from '../globals/config.json'
+// import { type FiltersContextType } from '../contexts';
+// import { Filters } from '../contexts/FiltersContext';
 
 
 class SmallBody {
@@ -91,7 +91,7 @@ class NasaSmallBodyQueryApi {
         //this.client = new SupabaseClient()//config.supabase.url, config.supabase.key)
     }
 
-    async getSmallBodies(filters: FiltersContextType['filters'], attempt: number = 0): Promise<Trajectory[]> {
+    async getSmallBodies(): Promise<Trajectory[]> {//filters: FiltersContextType['filters'], attempt: number = 0): Promise<Trajectory[]> {
         //if (JSON.stringify(filters) === JSON.stringify(config.filters.default)) {
             return await this.getFirstValues()
         //}

@@ -11,7 +11,7 @@ const Skybox = () => {
         "pz",
         "nz",
     ].map((t) => `/sac25/skybox/${t}.jpg`);
-    const [cubeMapTexture] = useLoader<any, any, any>(THREE.CubeTextureLoader, [skyboxTextures]);
+    const [cubeMapTexture] = useLoader<any, any>(THREE.CubeTextureLoader, [skyboxTextures]);
     const { scene } = useThree();
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, useMemo } from "react"
+import React, { memo, type ReactNode, useMemo } from "react"
 
 export type ContextValuePair<T> = { context: React.Context<T>, value: T };
 type MultipleContextProviderProps = {
@@ -8,16 +8,16 @@ type MultipleContextProviderProps = {
 
 const MultipleContextProvider = memo(function MultipleContextProvider({ contexts, children }: MultipleContextProviderProps) {
     const providers = useMemo(() => {
-        return contexts.reduce<React.FC<{ children: ReactNode }>>((acc, entry) => {
-            return ({children}: {children: ReactNode}) => (
+        return contexts.reduce<(children: ReactNode) => ReactNode>((acc, entry) => {
+            return (children: ReactNode) => (
                 <entry.context.Provider value={entry.value}>
-                    {acc({children})}
+                    {acc(children)}
                 </entry.context.Provider>
             );
-        }, (props) => props.children);
+        }, (children) => <>{children}</>);
     }, [contexts]);
 
-    return providers({children});
+    return <>{providers(children)}</>;
 });
 
 export default MultipleContextProvider;

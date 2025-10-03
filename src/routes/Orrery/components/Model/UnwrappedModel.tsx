@@ -1,18 +1,18 @@
 import * as THREE from "three";
-import { dispose, useLoader } from "@react-three/fiber";
+import { dispose } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+// import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { SUN_MODEL_HEIGHT } from "../../globals/constants";
 import config from "../../globals/config.json";
 import { type Coords } from "../../OrreryTypes";
 import { useGLTF } from '@react-three/drei';
 
 
-const extensionLoaderMap = {
-    glb: GLTFLoader,
-    obj: OBJLoader,
-};
+// const extensionLoaderMap = {
+//     glb: GLTFLoader,
+//     obj: OBJLoader,
+// };
 
 type ModelProps = {
     source: string;

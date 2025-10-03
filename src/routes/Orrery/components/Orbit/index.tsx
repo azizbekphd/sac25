@@ -59,7 +59,7 @@ const Orbit: React.FC<OrbitProps> = memo(({ trajectory, timestamp }) =>{
                 selected.setObjectId(hovered.objectId)
                 return
             }
-            const index = (e.intersections ?? [e.intersection] ?? [])
+            const index = (e.intersections ?? [e.intersection])
                 .sort((a: THREE.Intersection, b: THREE.Intersection) => a.distanceToRay! - b.distanceToRay!)[0].index!
             if (index === -1) return false
             selected.setObjectId(trajectory.id)

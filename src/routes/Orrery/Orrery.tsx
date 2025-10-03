@@ -43,7 +43,7 @@ export const Orrery = () => {
     useEffect(() => {
         if (trajectories.planets.length > 0) {
             setLoading(true)
-            nasaApi.getSmallBodies(filters.filters).then(smallBodies => {
+            nasaApi.getSmallBodies(/*filters.filters*/).then(smallBodies => {
                 setTrajectories({
                     ...trajectories,
                     smallBodies: [...smallBodies]

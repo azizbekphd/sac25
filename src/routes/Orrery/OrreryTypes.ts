@@ -34,12 +34,13 @@ import { MILLISECONDS_IN_SIDEREAL_YEAR, SUN_DIAMETER } from "./globals/constants
 import config from "./globals/config.json";
 
 
-export enum TrajectoryType {
-    Planet,
-    NEO,
-    PHA,
-    Other
-}
+export type TrajectoryType = "Planet" | "NEO" | "PHA" | "Other";
+export const TrajectoryType = {
+    Planet: "Planet" as TrajectoryType,
+    NEO: "NEO" as TrajectoryType,
+    PHA: "PHA" as TrajectoryType,
+    Other: "Other" as TrajectoryType
+};
 
 export class Trajectory {
     id: string;
