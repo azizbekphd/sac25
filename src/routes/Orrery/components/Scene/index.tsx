@@ -71,7 +71,7 @@ function Scene() {
                         timestamp={timeControls.time} />)}
                     <OrbitControls ref={orbitControlsRef} enablePan={false} maxDistance={400} camera={camera} zoomSpeed={2} />
                     <CameraController camera={camera} orbitControlsRef={orbitControlsRef} />
-                    {/* <Sun /> */}
+                    <Sun />
                     <Suspense fallback={null}>
                         <Skybox />
                     </Suspense>
