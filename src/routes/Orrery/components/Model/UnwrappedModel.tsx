@@ -38,7 +38,7 @@ const UnwrappedModel = ({ source, position, scale = 1, color, rotation = [0, 0, 
         return _Loader;
     }, [extension]);
 
-    const loader = useLoader<any, any, any>(Loader, source);
+    const loader = useLoader<any, any>(Loader, source);
 
     const model = useMemo(() => {
         if (loader.scene) {
@@ -49,10 +49,11 @@ const UnwrappedModel = ({ source, position, scale = 1, color, rotation = [0, 0, 
 
     useEffect(() => {
         return () => {
-            dispose(model)
-            useLoader.clear(Loader, source)
-        }
-    }, [model, Loader, source])
+            if (model && modelRef.current) {
+                dispose(model);
+            }
+        };
+    }, [model]);
 
     const modelSizeCompensationFactor = useMemo(() => {
         if (!model) return;
