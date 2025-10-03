@@ -1,4 +1,3 @@
-import XRContext from './XRContext';
 import TrajectoriesContext, { type TrajectoriesContextType } from './TrajectoriesContext';
 import FocusContext, { type FocusContextType } from './FocusContext';
 import TimeControlsContext, { type TimeControlsState } from './TimeControllerContext';
@@ -6,7 +5,6 @@ import FiltersContext, { Filters, type FiltersContextType } from './FiltersConte
 import LoadingContext, { type LoadingContextType } from './LoadingContext';
 
 export {
-    XRContext,
     TrajectoriesContext,
     type TrajectoriesContextType,
     FocusContext,

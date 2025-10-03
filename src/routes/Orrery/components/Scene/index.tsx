@@ -2,60 +2,38 @@ import "./index.css"
 import { Canvas, extend } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { lazy, Suspense, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { IfInSessionMode, XR } from "@react-three/xr";
-import { TrajectoriesContext, XRContext, TimeControlsContext, type TrajectoriesContextType } from "../../contexts";
+import { TrajectoriesContext, TimeControlsContext, type TrajectoriesContextType } from "../../contexts";
 import { PerspectiveCamera } from "three";
 import Orbit from "../Orbit";
-import { CameraController, SmallBodies, Sun, VrButton } from "..";
+import { CameraController, SmallBodies, Sun } from "..";
 import config from "../../globals/config.json";
 
 const Skybox = lazy(() => import("../Skybox/index.tsx"))
 
-enum ViewMode {
-    normal,
-    vr
-}
-
 extend({ OrbitControls });
 
 const normalCamera = new PerspectiveCamera(50, 1, 0.000001, 1000);
-const xrCamera = new PerspectiveCamera(50, 1, 0.000001, 1000);
 
 function Scene() {
     const objects = useContext<TrajectoriesContextType>(TrajectoriesContext);
-    const xrStore = useContext(XRContext);
     const { timeControls } = useContext(TimeControlsContext);
-    const [mode, setMode] = useState<ViewMode>(ViewMode.normal);
     const [camera, setCamera] = useState<PerspectiveCamera>(normalCamera);
     const orbitControlsRef = useRef(null!);
 
     useEffect(() => {
-        xrStore.subscribe((state, prevState) => {
-            if (state.session !== undefined &&
-                prevState.session === undefined
-            ) {
-                setMode(ViewMode.vr)
-            } else if (state.session === undefined &&
-                prevState.session !== undefined
-            ) {
-                setMode(ViewMode.normal)
-            }
-        });
         const handleResize = () => {
             normalCamera.aspect = window.innerWidth / window.innerHeight;
             normalCamera.updateProjectionMatrix();
-            xrCamera.aspect = window.innerWidth / window.innerHeight;
-            xrCamera.updateProjectionMatrix();
         }
         window.addEventListener('resize', handleResize)
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [xrStore])
+    }, [])
 
     useEffect(() => {
-        setCamera(mode === ViewMode.normal ? normalCamera : xrCamera)
-    }, [mode])
+        setCamera(normalCamera)
+    }, [])
 
     useEffect(() => {
         camera.fov = 50;
@@ -79,7 +57,6 @@ function Scene() {
                 camera={camera}
                 dpr={window.devicePixelRatio}
                 frameloop="demand">
-                <XR store={xrStore}>
                     <ambientLight intensity={0.05} />
                     <pointLight position={[0, 0, 0]} decay={0} intensity={Math.PI} />
                     {objects.planets.map(
@@ -92,17 +69,13 @@ function Scene() {
                         key={chunk.map(obj => obj.id).join()}
                         trajectories={chunk}
                         timestamp={timeControls.time} />)}
-                    <IfInSessionMode deny={['immersive-ar', 'immersive-vr']} >
-                        <OrbitControls ref={orbitControlsRef} enablePan={false} maxDistance={400} camera={camera} zoomSpeed={2} />
-                    </IfInSessionMode>
+                    <OrbitControls ref={orbitControlsRef} enablePan={false} maxDistance={400} camera={camera} zoomSpeed={2} />
                     <CameraController camera={camera} orbitControlsRef={orbitControlsRef} />
-                    <Sun />
+                    {/* <Sun /> */}
                     <Suspense fallback={null}>
                         <Skybox />
                     </Suspense>
-                </XR>
             </Canvas>
-            <VrButton store={xrStore} />
         </>
     );
 }

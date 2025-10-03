@@ -1,5 +1,4 @@
 import Scene from "./Scene";
-import VrToggler from "./VrToggler";
 import CelestialBody from './CelestialBody';
 import SmallBodies from './SmallBodies';
 import SideMenu from './SideMenu';
@@ -12,12 +11,11 @@ import Skybox from './Skybox';
 import CameraController from './CameraController';
 import Model from './Model';
 import Loading from "./Loading";
-import VrButton from './VrButton';
 
 export {
-    Scene, VrToggler, CelestialBody,
+    Scene, CelestialBody,
     SmallBodies, SideMenu, FiltersMenu,
     BodiesTable, TimeControls, Sun, Model,
     ConstantSizeSphere, Skybox, CameraController,
-    Loading, VrButton
+    Loading
 };

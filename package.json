@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@mapbox/tile-cover": "^3.0.2",
-    "@react-three/xr": "^6.2.8", 
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
     "react": "^19.1.1",

@@ -1,8 +1,7 @@
 'use client'
 
-import { type FiltersContextType, FocusContext, TrajectoriesContext, type TrajectoriesContextType, XRContext, Filters, FiltersContext, TimeControlsContext, type TimeControlsState } from './contexts'
-import { useEffect, useMemo, useState } from 'react'
-import { createXRStore } from '@react-three/xr'
+import { type FiltersContextType, FocusContext, TrajectoriesContext, type TrajectoriesContextType, Filters, FiltersContext, TimeControlsContext, type TimeControlsState } from './contexts'
+import { useEffect, useState } from 'react'
 import config from './globals/config.json'
 import { useInterval } from '../../hooks'
 import { MultipleContextProvider } from './OrreryUtils'
@@ -11,10 +10,8 @@ import ForceLandscape from './components/ForceLandscape'
 import { TrajectoryUtils } from './OrreryTypes'
 import { nasaApi } from './globals/instances'
 
-const xrStore = createXRStore();
 
 export const Orrery = () => {
-    const memoizedXrStore = useMemo(() => xrStore, [xrStore])
     const [trajectories, setTrajectories] = useState<TrajectoriesContextType>({
         planets: [],
         smallBodies: [],
@@ -95,7 +92,6 @@ export const Orrery = () => {
                 },
                 center: [0, 0, 0]
             },},
-            { context: XRContext, value: memoizedXrStore },
         ]}>
             <ForceLandscape>
                 <Scene />
