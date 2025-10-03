@@ -29,7 +29,7 @@ export const Orrery = () => {
 
     useEffect(() => {
         if (trajectories.planets.length === 0) {
-            TrajectoryUtils.load("/data/planets.json").then(planets => {
+            TrajectoryUtils.load("/sac25/data/planets.json").then(planets => {
                 setTrajectories({
                     ...trajectories,
                     planets
