@@ -1,0 +1,30 @@
+.scene {
+    width: 100%;
+    height: 100%;
+}
+
+.trajectory-label {
+    transition-duration: 0.2s;
+    font-size: 12px;
+    text-shadow: 0 0 100px black;
+    padding: 0;
+    margin: 0;
+    z-index: 5;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: max-content;
+    user-select: none;
+    opacity: 0.8;
+}
+
+.trajectory-label.highlight {
+    opacity: 1;
+}
+
+.trajectory-label.hide {
+    opacity: 0;
+}
+
+canvas {
+    background-color: black;
+}
