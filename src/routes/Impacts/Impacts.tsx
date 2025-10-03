@@ -3,15 +3,22 @@
 import { Canvas, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
-import { mapboxInterceptor } from './ImpactsUtils'
+import { getMinElevationFromTexture, mapboxInterceptor } from './ImpactsUtils'
+import { useEffect, useState } from 'react'
+import { DamagedSurface } from './components/DamagedSurface'
+import { DEM_SCALE } from './ImpactsConfig'
 
 export const Impacts = () => {
-  const colorTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.satellite/14/12139/6875@2x.png'))
-  const heightmapTexture = useLoader(THREE.TextureLoader, mapboxInterceptor('https://api.mapbox.com/v4/mapbox.terrain-rgb/14/12139/6875@2x.pngraw'))
+  const colorMap = useLoader(THREE.TextureLoader, mapboxInterceptor('/sac25/colorMap.jpeg'))
+  const heightMap = useLoader(THREE.TextureLoader, mapboxInterceptor('/sac25/heightMap.png'))
+  const [lowestPoint, setLowestPoint] = useState(0)
+  useEffect(() => {
+    getMinElevationFromTexture(heightMap, DEM_SCALE).then(value => setLowestPoint(value))
+  }, [heightMap])
 
   return (
     <div style={{ height: '100vh' }}>
-      <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
+      <Canvas camera={{ position: [1, 1, 1], fov: 60 }}>
         {/* Lights */}
         <ambientLight intensity={0.5} />
         <directionalLight
@@ -26,48 +33,8 @@ export const Impacts = () => {
         <OrbitControls enableDamping dampingFactor={0.1} />
 
         {/* Plane */}
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[5, 5, 1024, 1024]} />
-          <shaderMaterial
-            uniforms={{
-              elevTexture: { value: heightmapTexture },
-              colorTexture: { value: colorTexture },
-              scale: { value: 0.0001 }, // scale elevation exaggeration
-            }}
-            vertexShader={`
-              varying vec2 vUv;
-              uniform sampler2D elevTexture;
-              uniform float scale;
-
-              float decodeElevation(vec3 rgb) {
-                return -10000.0 + ((rgb.r * 256.0 * 256.0 +
-                                    rgb.g * 256.0 +
-                                    rgb.b) * 0.1);
-              }
-
-              void main() {
-                vUv = uv;
-                vec4 elevColor = texture2D(elevTexture, uv);
-                vec3 rgb = elevColor.rgb * 255.0;
-                float height = decodeElevation(rgb);
-
-                vec3 displacedPosition = position;
-                displacedPosition.z += height * scale; // or y if you want vertical in Y
-
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
-              }
-            `}
-            fragmentShader={`
-              varying vec2 vUv;
-              uniform sampler2D colorTexture;
-
-              void main() {
-                gl_FragColor = texture2D(colorTexture, vUv);
-              }
-            `}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
+        {/* <OriginalSurface textures={{ colorMap, heightMap }} lowestPoint={lowestPoint} /> */}
+        <DamagedSurface textures={{ colorMap, heightMap }} lowestPoint={lowestPoint} />
       </Canvas>
     </div>
   )
