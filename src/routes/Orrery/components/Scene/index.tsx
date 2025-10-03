@@ -10,8 +10,6 @@ import config from "../../globals/config.json";
 
 const Skybox = lazy(() => import("../Skybox/index.tsx"))
 
-// extend({ OrbitControls }); // Not needed for @react-three/drei's OrbitControls
-
 const normalCamera = new PerspectiveCamera(50, 1, 0.000001, 1000);
 
 function Scene() {
@@ -53,9 +51,10 @@ function Scene() {
     return (
         <>
             <Canvas
+                gl={{ antialias: true }}
                 style={{position: 'fixed', top: 0, left: 0}}
                 camera={camera}
-                dpr={window.devicePixelRatio}
+                dpr={2}
                 frameloop="demand">
                     <ambientLight intensity={0.05} />
                     <pointLight position={[0, 0, 0]} decay={0} intensity={Math.PI} />
