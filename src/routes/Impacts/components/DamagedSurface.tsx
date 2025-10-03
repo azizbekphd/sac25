@@ -1,9 +1,10 @@
 import * as THREE from 'three'
 import type { SurfaceTextures } from '../ImpactsTypes'
 import { useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { DEM_SCALE } from '../ImpactsConfig'
 import { quadraticBezier } from '../ImpactsUtils'
+import { ClockContext } from '../contexts/ClockContext'
 
 interface DamagedSurfaceProps {
   textures: SurfaceTextures
@@ -11,7 +12,7 @@ interface DamagedSurfaceProps {
 }
 
 export const DamagedSurface = ({ textures, lowestPoint }: DamagedSurfaceProps) => {
-  const clock = useRef({ start: performance.now() })
+  const clock = useContext(ClockContext)
   const uniforms = useRef({
     elevTexture: { value: textures.heightMap },
     colorTexture: { value: textures.colorMap },
@@ -23,7 +24,7 @@ export const DamagedSurface = ({ textures, lowestPoint }: DamagedSurfaceProps) =
     rimHeight: { value: 1000 }
   })
   useFrame(() => {
-    const factor = quadraticBezier(Math.min(1, (performance.now() - clock.current.start) / 5000), 0, 0.7, 0.7)
+    const factor = quadraticBezier(Math.min(1, clock.progress / 5000), 0, 0.7, 0.7)
     uniforms.current.craterRadius.value = 0.25 * factor
     uniforms.current.craterDepth.value = 300 * factor
     uniforms.current.rimWidth.value = 0.05 * factor

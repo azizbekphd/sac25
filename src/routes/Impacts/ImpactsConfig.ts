@@ -1,1 +1,1 @@
-export const DEM_SCALE = 0.0002
+export const DEM_SCALE = 0.0004
