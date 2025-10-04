@@ -11,6 +11,7 @@ import { SplitViewer } from './components/SplitViewer'
 import { ClockContext } from './contexts/ClockContext'
 import { ImpactsScene } from './components/ImpactsScene'
 import { Flash } from './components/Flash'
+import { Explosion } from './components/Explosion'
 
 export const Impacts = () => {
   const colorMap = useLoader(THREE.TextureLoader, mapboxInterceptor('/sac25/colorMap.jpeg'))
@@ -21,7 +22,7 @@ export const Impacts = () => {
   }, [heightMap])
 
   return (
-    <ClockContext.Provider value={{ start: performance.now(), progress: 0 }}>
+    <ClockContext.Provider value={{ start: 0, progress: 0 }}>
       <div style={{ height: '100vh' }}>
         <SplitViewer
           before={<OriginalSurface textures={{ colorMap, heightMap }} lowestPoint={lowestPoint} />}
@@ -29,6 +30,7 @@ export const Impacts = () => {
             <ImpactsScene>
               <DamagedSurface textures={{ colorMap, heightMap }} lowestPoint={lowestPoint} />
               <Flash />
+              <Explosion />
             </ImpactsScene>
           }
         />
