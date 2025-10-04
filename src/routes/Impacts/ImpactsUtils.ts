@@ -1,9 +1,5 @@
 import * as THREE from 'three'
 
-export function mapboxInterceptor(url: string) {
-  return `${url}?access_token=pk.eyJ1IjoiYXppemJla3BoZCIsImEiOiJjbWc3cDZ5cnowNDdhMmtzaGJpMTNoM3QwIn0.-65ocBfPpeDugTvYQWcTvQ`
-}
-
 function decodeElevation(R: number, G: number, B: number): number {
   return -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1)
 }
