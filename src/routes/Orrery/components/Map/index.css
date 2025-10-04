@@ -1,0 +1,89 @@
+.map {
+  height: min(40vh, 400px);
+  width: min(40vw, 400px);
+  background-color: #e5e3df;
+  bottom: 5px;
+  right: 5px;
+  position: absolute;
+  z-index: 12;
+  transition-duration: .4s;
+  text-align: left;
+}
+
+.map.expanded {
+  height: 100vh;
+  width: 100vw;
+  bottom: 0;
+  right: 0;
+}
+
+button.map-menu-toggler {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 13;
+  width: 30px;
+  height: 30px;
+  padding: 12px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  visibility: hidden;
+  transition-duration: .4s;
+  background-color: rgba(43, 43, 43, 0.8);
+  border: none;
+}
+
+button.map-menu-toggler:focus,button.map-menu-toggler:active,button.map-menu-toggler:hover {
+  outline: none;
+}
+.map:hover button.map-menu-toggler {
+  visibility: visible;
+}
+
+.map .maximize-minimize-icon {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.map .map-menu-content{
+  width: 100vw;
+  height: 100vh;
+}
+
+.map .map-menu-content .map-content {
+  width: 100vw;
+  height: 100vh;
+}
+
+#map-wrapper-outer {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #map-wrapper-outer {
+        display: 'flex';
+        justify-content: center;
+        align-items: center;
+    }
+
+#map-wrapper-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.map-coords {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  padding: 5px 10px;
+  margin: 0;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 3px;
+}
