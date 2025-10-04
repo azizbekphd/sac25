@@ -35,7 +35,7 @@ export const SplitViewer = ({ before, after }: SplitViewerProps) => {
 
   const camera = useMemo(() => {
     const camera = new THREE.PerspectiveCamera()
-    camera.position.set(-3, 3, 3)
+    camera.position.set(-6, 6, 6)
     camera.fov = 60
     return camera
   }, [])
