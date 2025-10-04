@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import config from './globals/config.json'
 import { useInterval } from '../../hooks'
 import { MultipleContextProvider } from './OrreryUtils'
-import { Loading, Scene, SideMenu, TimeControls } from './components'
+import { Loading, Scene, SideMenu, TimeControls, Map } from './components'
 import ForceLandscape from './components/ForceLandscape'
 import { TrajectoryUtils } from './OrreryTypes'
 import { nasaApi } from './globals/instances'
@@ -97,6 +97,7 @@ export const Orrery = () => {
                 <Scene />
                 <SideMenu />
                 <TimeControls />
+                <Map />
                 <Loading show={loading} fullScreen/>
             </ForceLandscape>
         </MultipleContextProvider>
