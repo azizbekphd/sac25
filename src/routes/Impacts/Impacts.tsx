@@ -2,7 +2,8 @@
 
 import { useLoader } from '@react-three/fiber'
 import * as THREE from 'three'
-import { getMinElevationFromTexture, mapboxInterceptor } from './ImpactsUtils'
+import { getMinElevationFromTexture } from './ImpactsUtils'
+import { mapboxInterceptor } from '../../utils/mapbox'
 import { useEffect, useState } from 'react'
 import { DamagedSurface } from './components/DamagedSurface'
 import { DEM_SCALE } from './ImpactsConfig'

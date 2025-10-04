@@ -11,11 +11,12 @@ import Skybox from './Skybox';
 import CameraController from './CameraController';
 import Model from './Model';
 import Loading from "./Loading";
+import Map from "./Map";
 
 export {
     Scene, CelestialBody,
     SmallBodies, SideMenu, FiltersMenu,
-    BodiesTable, TimeControls, Sun, Model,
+    BodiesTable, TimeControls, Sun, Model, Map,
     ConstantSizeSphere, Skybox, CameraController,
     Loading
 };
