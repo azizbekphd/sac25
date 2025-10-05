@@ -1,0 +1,27 @@
+.slider-input-wrapper {
+  height: fit-content;
+  background-color: #00000080;
+  width: 100%;
+}
+.slider-input-wrapper input[type="range"] {
+  width: 200px;
+  height: 30px;
+  font-size: 18px;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #00000080;
+}
+input[type="range"]::-moz-range-track {
+  background-color: #00000080;
+}
+
+.slider-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: large;
+}
+
+.slider-title-wrapper .slider-title-name {
+  font-weight: 700;
+}

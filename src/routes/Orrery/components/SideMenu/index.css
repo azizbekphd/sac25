@@ -47,39 +47,3 @@
   width: 2rem;
   height: 60px;
 }
-
-.slider-input-wrapper {
-  height: fit-content;
-  width: min(40vw, 400px);
-  background-color: #222222;
-  bottom: min(50vh, 500px);
-  right: 5px;
-  position: absolute;
-  z-index: 11;
-}
-.slider-input-wrapper input[type="range"] {
-  width: 200px;
-  height: 30px;
-  font-size: 18px;
-}
-input[type="range"]::-webkit-slider-runnable-track {
-  color: blue;
-  background: green;
-}
-input[type="range"]::-moz-range-track {
-  color: blue;
-
-  background: green;
-}
-
-.slider-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  font-size: large;
-  font-weight: 500;
-}
-
-.slider-title-wrapper .slider-title-name {
-  font-weight: 700;
-}
