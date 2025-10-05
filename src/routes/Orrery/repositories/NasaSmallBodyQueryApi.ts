@@ -3,11 +3,9 @@ import { type FiltersContextType } from '../contexts';
 
 
 class SmallBody {
-    spkid: number;
+    spkid: string;
     name: string;
     full_name: string;
-    neo: boolean;
-    pha: boolean;
     e: string;       // oE
     w: string;       // aP
     a: string;       // smA
@@ -17,17 +15,14 @@ class SmallBody {
     per_y: string;   // sidereal
     diameter: string;
     rot_per: string;
-    kind: string;
+    // kind: string;
     sourceJSON: string;
     model: string;
-
     constructor(args: any[]) {
         args = args.slice(2)
         this.spkid = args[0];
         this.name = args[1];
         this.full_name = args[2];
-        this.neo = args[3];
-        this.pha = args[4];
         this.e = args[5];
         this.w = args[6];
         this.a = args[7];
@@ -37,9 +32,8 @@ class SmallBody {
         this.per_y = args[11];
         this.diameter = args[12];
         this.rot_per = args[13];
-        this.kind = args[14];
-        this.model = args[15];
-        this.sourceJSON = JSON.stringify(args[16])
+        this.model = args[14];
+        this.sourceJSON = JSON.stringify(args[15])
     }
 
     static fromObject(obj: any): SmallBody {
@@ -47,20 +41,15 @@ class SmallBody {
             null, null,
             obj.spkid, obj.name, obj.full_name, obj.neo, obj.pha,
             obj.e, obj.w, obj.a, obj.ma, obj.i, obj.om,
-            obj.per_y, obj.diameter, obj.rot_per, obj.kind, obj.model, obj
+            obj.per_y, obj.diameter, obj.rot_per, /* obj.kind, */ obj.model, obj
         ])
     }
 
     toTrajectory(): Trajectory {
-        let _type = TrajectoryType.Other
-        if (this.pha) {
-            _type = TrajectoryType.PHA
-        } else if (this.neo) {
-            _type = TrajectoryType.NEO
-        }
+        let _type = TrajectoryType.PHA
         return new Trajectory(
-            this.spkid.toString(),
-            this.full_name.trim(),
+            this.spkid,
+            this.full_name.toString().trim(),
             parseFloat(this.a),
             parseFloat(this.i),
             parseFloat(this.w),
@@ -72,9 +61,8 @@ class SmallBody {
             0,
             parseFloat(this.rot_per),
             _type,
-            this.kind.startsWith('c') ? 'lightblue' : 'grey',
+            'grey',
             false,
-            this.kind,
             this.sourceJSON,
             '',
             this.model
@@ -108,7 +96,7 @@ class NasaSmallBodyQueryApi {
                 )
             );
             
-            this.allBodies = result.map((body: any) => SmallBody.fromObject(body));
+            this.allBodies = result.map((body: any) => SmallBody.fromObject({...body, model: null}));
             this.isDataLoaded = true;
             return this.allBodies;
         } catch (error) {
