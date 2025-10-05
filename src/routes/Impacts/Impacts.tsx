@@ -16,6 +16,7 @@ import { Asteroid } from './components/Asteroid'
 import MultipleContextProvider from '../Orrery/MultipleContextProvider'
 import { ImpactDataContext, type ImpactDataContextType } from './contexts/ImpactDataContext'
 import { useSearchParams } from 'react-router-dom'
+import ImpactInfoPanel from './components/ImpactInfo'
 
 export const Impacts = () => {
   const [searchParams] = useSearchParams()
@@ -43,7 +44,7 @@ export const Impacts = () => {
        { context: ClockContext, value: { start: -1, progress: 0 } },
        { context: ImpactDataContext, value: impactData }
      ]}>
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: '100vh', position: "relative" }}>
         <SplitViewer
           before={<OriginalSurface textures={{ colorMap, heightMap }} lowestPoint={lowestPoint} />}
           after={
@@ -55,6 +56,7 @@ export const Impacts = () => {
             </ImpactsScene>
           }
         />
+        <ImpactInfoPanel />
       </div>
     </MultipleContextProvider>
   )
