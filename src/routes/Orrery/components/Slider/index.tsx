@@ -11,7 +11,7 @@ const Slider: React.FC = () => {
     <div className="slider-input-wrapper">
       <div className="slider-title-wrapper">
         <div className="slider-title-name">Speed:</div>
-        <div>{impactParams.params.speed},000 mph</div>
+        <div>{impactParams.params.speed},000 kph</div>
       </div>
       <input
         type="range"
