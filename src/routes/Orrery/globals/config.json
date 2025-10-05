@@ -426,5 +426,15 @@
         "tick": 40,
         "scale": 0.00004,
         "minDistance": 0.0005
+    },
+    "impactParams": {
+        "default": {
+            "lat": 34.0522,
+            "lng": -118.2437,
+            "speed": 20,
+            "angle": 45
+        },
+        "speedRange": [1, 250],
+        "angleRange": [5, 90]
     }
 }
