@@ -45,7 +45,7 @@ export const Explosion = () => {
 
   return (
     <mesh ref={meshRef} position={[0, 0, 0]}>
-      <icosahedronGeometry args={[impactData.fireball.radius, 200]} />
+      <icosahedronGeometry args={[impactData.fireball.radius / 2, 200]} />
 
       <shaderMaterial
         uniforms={uniforms.current}
