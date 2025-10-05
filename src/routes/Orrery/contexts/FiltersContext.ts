@@ -19,8 +19,7 @@ class Filters {
     }
 
     static classesToFilter(classDef: typeof config.filters.asteroidClasses[0]): string {
-        const params = classDef.params.map((param) => `${param.field}.${param.operator}.${param.value}`)
-        const filter = params.length > 1 ? `and(${params.join(', ')})` : params[0]
+        const filter = classDef.representation;
         return filter
     }
 }

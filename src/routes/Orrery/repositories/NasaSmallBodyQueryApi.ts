@@ -15,9 +15,9 @@ class SmallBody {
     per_y: string;   // sidereal
     diameter: string;
     rot_per: string;
-    // kind: string;
     sourceJSON: string;
     model: string;
+    class : string;
     constructor(args: any[]) {
         args = args.slice(2)
         this.spkid = args[0];
@@ -33,7 +33,8 @@ class SmallBody {
         this.diameter = args[12];
         this.rot_per = args[13];
         this.model = args[14];
-        this.sourceJSON = JSON.stringify(args[15])
+        this.class = args[15];
+        this.sourceJSON = JSON.stringify(args[16])
     }
 
     static fromObject(obj: any): SmallBody {
@@ -41,7 +42,7 @@ class SmallBody {
             null, null,
             obj.spkid, obj.name, obj.full_name, obj.neo, obj.pha,
             obj.e, obj.w, obj.a, obj.ma, obj.i, obj.om,
-            obj.per_y, obj.diameter, obj.rot_per, /* obj.kind, */ obj.model, obj
+            obj.per_y, obj.diameter, obj.rot_per, obj.model, obj.class, obj
         ])
     }
 
@@ -119,32 +120,12 @@ class NasaSmallBodyQueryApi {
         }
 
         // Asteroid classes filter
-        //! asteroid classes filter is not working properly
-        /* if (filters.asteroidClasses.length > 0) {
-            filtered = filtered.filter(body => {
-                return filters.asteroidClasses.some(className => {
-                    // This logic might need adjustment based on your actual class structure
-                    // Currently checks if body kind matches any selected class
-                    return body.kind === className || 
-                           (className.includes('=') && this.matchesClassCondition(body, className));
-                });
-            });
-        } */
+        if (filters.asteroidClasses.length > 0) {
+            filtered = filtered.filter(body => filters.asteroidClasses.includes(body.class));
+        }
 
         return filtered;
     }
-
-    // Helper method for class matching (adjust based on your actual class structure)
-    /* private matchesClassCondition(body: SmallBody, condition: string): boolean {
-        // Example: if condition is "kind=am", check if body.kind === "am"
-        if (condition.includes('=')) {
-            const [field, value] = condition.split('=');
-            if (field === 'kind') {
-                return body.kind === value;
-            }
-        }
-        return false;
-    } */
 
     // Sort bodies
     private sortBodies(bodies: SmallBody[], order: string, ascending: boolean): SmallBody[] {
