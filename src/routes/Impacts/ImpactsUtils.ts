@@ -68,7 +68,7 @@ export function calculateImpactData({
   do {
     zoom--
     tileSize = tileSizeAtZoomLevel(zoom)
-  } while (spaceNeeded <= tileSize)
+  } while (spaceNeeded >= tileSize)
 
   // const tile = cover.tiles({ type: "Point", coordinates: [lat, lng] }, { max_zoom: zoom })[0]
 
