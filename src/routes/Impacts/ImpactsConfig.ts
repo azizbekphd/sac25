@@ -1,1 +1,1 @@
-export const DEM_SCALE = 0.0004
+export const EQUATOR = 40075017

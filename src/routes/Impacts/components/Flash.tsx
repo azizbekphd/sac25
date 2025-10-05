@@ -3,9 +3,11 @@ import { useContext, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { quadraticBezier } from '../ImpactsUtils'
 import { ClockContext } from '../contexts/ClockContext'
+import { ImpactDataContext } from '../contexts/ImpactDataContext'
 
 export const Flash = () => {
   const clock = useContext(ClockContext)
+  const impactData = useContext(ImpactDataContext)
   const meshRef = useRef<THREE.Mesh>(null)
 
   const uniforms = useRef({
@@ -27,8 +29,8 @@ export const Flash = () => {
   })
 
   return (
-    <mesh ref={meshRef} position={[0, 1, 0]} renderOrder={999}>
-      <sphereGeometry args={[1, 48, 48]} />
+    <mesh ref={meshRef} position={[0, 0, 0]} renderOrder={999}>
+      <sphereGeometry args={[impactData.tile.size / 4, 48, 48]} />
       <shaderMaterial
         uniforms={uniforms.current}
         vertexShader={`

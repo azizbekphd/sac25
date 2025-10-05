@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import type { SurfaceTextures } from '../ImpactsTypes'
-import { DEM_SCALE } from '../ImpactsConfig'
+import { useContext } from 'react'
+import { ImpactDataContext } from '../contexts/ImpactDataContext'
 
 interface OriginalSurfaceProps {
   textures: SurfaceTextures
@@ -8,19 +9,19 @@ interface OriginalSurfaceProps {
 }
 
 export const OriginalSurface = ({ textures, lowestPoint }: OriginalSurfaceProps) => {
+  const impactData = useContext(ImpactDataContext)
+
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -lowestPoint, 0]} receiveShadow>
-      <planeGeometry args={[5, 5, 1024, 1024]} />
+      <planeGeometry args={[impactData.tile.size, impactData.tile.size, 1024, 1024]} />
       <shaderMaterial
         uniforms={{
           elevTexture: { value: textures.heightMap },
-          colorTexture: { value: textures.colorMap },
-          scale: { value: DEM_SCALE },
+          colorTexture: { value: textures.colorMap }
         }}
         vertexShader={`
           varying vec2 vUv;
           uniform sampler2D elevTexture;
-          uniform float scale;
 
           float decodeElevation(vec3 rgb) {
             return -10000.0 + ((rgb.r * 256.0 * 256.0 +
@@ -35,7 +36,7 @@ export const OriginalSurface = ({ textures, lowestPoint }: OriginalSurfaceProps)
             float height = decodeElevation(rgb);
 
             vec3 displacedPosition = position;
-            displacedPosition.z += height * scale; // or y if you want vertical in Y
+            displacedPosition.z += height;
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
           }

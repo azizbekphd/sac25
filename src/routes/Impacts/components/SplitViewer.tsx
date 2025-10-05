@@ -3,6 +3,7 @@ import { OrbitControls } from '@react-three/drei'
 import React, { useRef, useState, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import { Lights } from './Lights'
+import { EQUATOR } from '../ImpactsConfig'
 
 type SplitViewerProps = {
   before: React.JSX.Element
@@ -35,8 +36,9 @@ export const SplitViewer = ({ before, after }: SplitViewerProps) => {
 
   const camera = useMemo(() => {
     const camera = new THREE.PerspectiveCamera()
-    camera.position.set(-6, 6, 6)
+    camera.position.set(10000, 10000, 10000)
     camera.fov = 60
+    camera.far = EQUATOR
     return camera
   }, [])
 
