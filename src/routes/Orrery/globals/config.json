@@ -131,11 +131,7 @@
             "page": 1,
             "pageSize": 100,
             "query": "",
-            "group": "all",
-            "kind": "all",
-            "numberedState": "all",
-            "asteroidClasses": [],
-            "cometClasses": []
+            "asteroidClasses": []
         },
         "asteroidClasses": [
             {
