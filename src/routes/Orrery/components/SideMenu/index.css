@@ -34,16 +34,18 @@
 }
 
 .side-menu-toggler {
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  transform: translate(0, -50%);
-  font-size: 1rem;
-  color: black;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  writing-mode: vertical-lr;
-  width: 2rem;
-  height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(0, -50%);
+    font-size: 1rem;
+    color: black;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    writing-mode: vertical-lr;
+    width: 2rem;
+    height: 60px;
+    padding: unset !important;
+    border-radius: unset !important;
 }

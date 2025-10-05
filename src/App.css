@@ -21,6 +21,7 @@
 .live-button {
     font-size: 1rem;
     padding: unset !important;
+    border-radius: unset !important;
     color: black;
     background-color: grey;
     border: none;

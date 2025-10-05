@@ -53,18 +53,18 @@ export const Orrery = () => {
     config.impactParams.default
   );
 
-  useEffect(() => {
-    if (trajectories.planets.length === 0) {
-      TrajectoryUtils.load("sac25/data/planets.json").then((planets) => {
-        setTrajectories({
-          ...trajectories,
-          planets,
-        });
-      });
-      return;
-    }
-    return () => {};
-  }, []);
+    useEffect(() => {
+        if (trajectories.planets.length === 0) {
+            TrajectoryUtils.load("/sac25/data/planets.json").then(planets => {
+                setTrajectories({
+                    ...trajectories,
+                    planets
+                })
+            })
+            return
+        }
+        return () => { }
+    }, [])
 
   useEffect(() => {
     if (trajectories.planets.length > 0) {
