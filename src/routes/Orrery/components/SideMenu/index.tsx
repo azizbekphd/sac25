@@ -29,7 +29,7 @@ const SideMenu: React.FC = () => {
               <h2>Menu</h2>
 
               <FiltersMenu />
-              <Slider />s
+              <Slider />
               <BodiesTable />
             </>
           )}

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import React, { memo, useEffect, useRef, useCallback, useMemo, useContext } from 'react'
-import { Trajectory, TrajectoryType } from '../../OrreryTypes'
+import { Trajectory } from '../../OrreryTypes'
 import config from '../../globals/config.json'
 import { type ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import { FocusContext, TimeControlsContext } from '../../contexts';
@@ -32,14 +32,14 @@ const SmallBodies: React.FC<SmallBodyOrbits> = memo(({ trajectories, timestamp }
     const clickCoords = useRef<{x: number, y: number}>(null!)
 
     const calculateColors = useCallback(() => {
-        const colors = new Float32Array(drawableTrajectories.map(t => {
-            let colorCode = config.smallBodies.asteroidColor
-            if (t.type === TrajectoryType.PHA) {
-                colorCode = config.smallBodies.phaColor
-            } else if (t.kind.startsWith('c')) {
-                colorCode = config.smallBodies.cometColor
-            }
-            return colorCode
+        const colors = new Float32Array(drawableTrajectories.map(() => {
+            // let colorCode = config.smallBodies.asteroidColor
+            // if (t.type === TrajectoryType.PHA) {
+            //     colorCode = config.smallBodies.phaColor
+            // } else if (t.kind.startsWith('c')) {
+            //     colorCode = config.smallBodies.cometColor
+            // }
+            return config.smallBodies.asteroidColor
         }).flat())
         return colors
     }, [drawableTrajectories])

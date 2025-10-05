@@ -61,7 +61,6 @@ export class Trajectory {
         sLR?: number,
         scaleFactor?: number,
     }
-    kind: string;
     sourceJSON: string;
     description: string;
     model: string | undefined;
@@ -84,7 +83,6 @@ export class Trajectory {
         type: TrajectoryType,
         color?: string,
         calculateOrbit: boolean = false,
-        kind: string = '',
         sourceJSON: string = '{}',
         description: string = '',
         model: string = '',
@@ -108,7 +106,6 @@ export class Trajectory {
         if (calculateOrbit) {
             this.cache.points = this.points
         }
-        this.kind = kind
         this.sourceJSON = sourceJSON
         this.description = description
         this.model = model
@@ -240,7 +237,6 @@ export class TrajectoryUtils {
                     type,
                     object.color,
                     calculateOrbit,
-                    '',
                     JSON.stringify(object),
                     object.description,
                     object.model

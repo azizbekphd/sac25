@@ -7,11 +7,7 @@ class Filters {
     page: number;
     pageSize: number;
     query: string;
-    group: 'all' | 'neo' | 'pha';
-    kind: 'all' | 'asteroids' | 'comets';
-    numberedState: 'all' | 'numbered' | 'unnumbered';
     asteroidClasses: string[];
-    cometClasses: string[];
 
     constructor(args: any) {
         this.order = args.order;
@@ -19,32 +15,11 @@ class Filters {
         this.page = args.page;
         this.pageSize = args.pageSize;
         this.query = args.query;
-        this.group = args.group;
-        this.kind = args.kind;
-        this.numberedState = args.numberedState;
         this.asteroidClasses = args.asteroidClasses;
-        this.cometClasses = args.cometClasses;
     }
 
-    static mappings = {
-        group: {
-            'neo': 'neo',
-            'pha': 'pha',
-        },
-        kind: {
-            'asteroids': 'a',
-            'comets': 'c',
-        },
-        numberedState: {
-            'numbered': 'n',
-            'unnumbered': 'u',
-        }
-    }
-
-    static classesToFilter(classDef: typeof config.filters.asteroidClasses[0], kind: string): string {
-        const kindFilter = `kind.like.${kind === 'comets' ? 'c' : 'a'}%`
+    static classesToFilter(classDef: typeof config.filters.asteroidClasses[0]): string {
         const params = classDef.params.map((param) => `${param.field}.${param.operator}.${param.value}`)
-        params.push(kindFilter)
         const filter = params.length > 1 ? `and(${params.join(', ')})` : params[0]
         return filter
     }

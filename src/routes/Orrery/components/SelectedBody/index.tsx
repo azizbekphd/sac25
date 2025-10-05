@@ -19,14 +19,14 @@ const SmallBodyDataTable = (props: { selectedObject: any }) => {
                     PropertyFormatter.format(selectedObject?.full_name)
                 }</td>
             </tr>
-            <tr>
+            {/* <tr>
                 <td>Type</td>
                 <td>{
                     PropertyFormatter.formatBoolean(
                         selectedObject?.kind.startsWith('c'),
                         'Comet', 'Asteroid')
                 }</td>
-            </tr>
+            </tr> */}
             <tr>
                 <td>Primary designation</td>
                 <td>{
@@ -39,7 +39,7 @@ const SmallBodyDataTable = (props: { selectedObject: any }) => {
                     PropertyFormatter.format(selectedObject?.class)
                 }</td>
             </tr>
-            <tr>
+            {/* <tr>
                 <td>Is NEO</td>
                 <td>{
                     PropertyFormatter.formatBoolean(selectedObject?.neo)
@@ -57,7 +57,7 @@ const SmallBodyDataTable = (props: { selectedObject: any }) => {
                     PropertyFormatter.formatBoolean(
                         selectedObject?.kind.endsWith('n'))
                 }</td>
-            </tr>
+            </tr> */}
             <tr className="header">
                 <th colSpan={2}>Physical Characteristics</th>
             </tr>

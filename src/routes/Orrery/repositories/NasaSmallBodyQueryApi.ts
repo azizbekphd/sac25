@@ -1,15 +1,11 @@
 import { Trajectory, TrajectoryType } from '../OrreryTypes'
-// import config from '../globals/config.json'
-// import { type FiltersContextType } from '../contexts';
-// import { Filters } from '../contexts/FiltersContext';
+import { type FiltersContextType } from '../contexts';
 
 
 class SmallBody {
-    spkid: number;
+    spkid: string;
     name: string;
     full_name: string;
-    neo: boolean;
-    pha: boolean;
     e: string;       // oE
     w: string;       // aP
     a: string;       // smA
@@ -19,17 +15,14 @@ class SmallBody {
     per_y: string;   // sidereal
     diameter: string;
     rot_per: string;
-    kind: string;
+    // kind: string;
     sourceJSON: string;
     model: string;
-
     constructor(args: any[]) {
         args = args.slice(2)
         this.spkid = args[0];
         this.name = args[1];
         this.full_name = args[2];
-        this.neo = args[3];
-        this.pha = args[4];
         this.e = args[5];
         this.w = args[6];
         this.a = args[7];
@@ -39,9 +32,8 @@ class SmallBody {
         this.per_y = args[11];
         this.diameter = args[12];
         this.rot_per = args[13];
-        this.kind = args[14];
-        this.model = args[15];
-        this.sourceJSON = JSON.stringify(args[16])
+        this.model = args[14];
+        this.sourceJSON = JSON.stringify(args[15])
     }
 
     static fromObject(obj: any): SmallBody {
@@ -49,20 +41,15 @@ class SmallBody {
             null, null,
             obj.spkid, obj.name, obj.full_name, obj.neo, obj.pha,
             obj.e, obj.w, obj.a, obj.ma, obj.i, obj.om,
-            obj.per_y, obj.diameter, obj.rot_per, obj.kind, obj.model, obj
+            obj.per_y, obj.diameter, obj.rot_per, /* obj.kind, */ obj.model, obj
         ])
     }
 
     toTrajectory(): Trajectory {
-        let _type = TrajectoryType.Other
-        if (this.pha) {
-            _type = TrajectoryType.PHA
-        } else if (this.neo) {
-            _type = TrajectoryType.NEO
-        }
+        let _type = TrajectoryType.PHA
         return new Trajectory(
-            this.spkid.toString(),
-            this.full_name.trim(),
+            this.spkid,
+            this.full_name.toString().trim(),
             parseFloat(this.a),
             parseFloat(this.i),
             parseFloat(this.w),
@@ -74,9 +61,8 @@ class SmallBody {
             0,
             parseFloat(this.rot_per),
             _type,
-            this.kind.startsWith('c') ? 'lightblue' : 'grey',
+            'grey',
             false,
-            this.kind,
             this.sourceJSON,
             '',
             this.model
@@ -85,61 +71,163 @@ class SmallBody {
 }
 
 class NasaSmallBodyQueryApi {
-    // client: SupabaseClient;
+    private allBodies: SmallBody[] = [];
+    private isDataLoaded: boolean = false;
 
-    constructor() {
-        //this.client = new SupabaseClient()//config.supabase.url, config.supabase.key)
+    constructor() {}
+
+    // Load all data from the JSON file
+    private async loadAllData(): Promise<SmallBody[]> {
+        if (this.isDataLoaded) {
+            return this.allBodies;
+        }
+
+        try {
+            const response = await fetch('/sac25/data/first_values.json');
+            const data = await response.json();
+            
+            const columns = data.fields;
+            const rows = data.data;
+            
+            const result = rows.map((row: any) =>
+                row.reduce(
+                    (result: any, field: any, index: number) => ({ ...result, [columns[index]]: field }),
+                    {}
+                )
+            );
+            
+            this.allBodies = result.map((body: any) => SmallBody.fromObject({...body, model: null}));
+            this.isDataLoaded = true;
+            return this.allBodies;
+        } catch (error) {
+            console.error('Failed to load small bodies data:', error);
+            throw error;
+        }
     }
 
-    async getSmallBodies(): Promise<Trajectory[]> {//filters: FiltersContextType['filters'], attempt: number = 0): Promise<Trajectory[]> {
-        //if (JSON.stringify(filters) === JSON.stringify(config.filters.default)) {
-            return await this.getFirstValues()
-        //}
-        //let request = this.client.from('bodies').select('*')
-        //if (filters.query && filters.query !== '') {
-        //    request = request.ilike('name', `%${filters.query}%`)
-        //}
-        //if (filters.group && filters.group !== 'all') {
-        //    request = request.eq(Filters.mappings.group[filters.group], true)
-        //}
-        //if (filters.kind && filters.kind !== 'all') {
-        //    request = request.ilike('kind', `${Filters.mappings.kind[filters.kind]}%`)
-        //}
-        //if (filters.numberedState && filters.numberedState !== 'all') {
-        //    request = request.ilike('kind', `%${Filters.mappings.numberedState[filters.numberedState]}`)
-        //}
-        //if (filters.asteroidClasses && filters.asteroidClasses.length > 0 ||
-        //    filters.cometClasses && filters.cometClasses.length > 0) {
-        //    const ors = [...filters.asteroidClasses, ...filters.cometClasses]
-        //    request = request.or(ors.join(', '))
-        //}
-        //const { data, error } = await request
-        //    .order(filters.order, {ascending: filters.ascending, nullsFirst: false})
-        //    .range(
-        //        (filters.page - 1) * filters.pageSize,
-        //        filters.page * filters.pageSize - 1)
-        //if (error) {
-        //    console.log(error)
-        //    if (attempt < 5) {
-        //        return await this.getSmallBodies(filters, attempt + 1)
-        //    }
-        //    return []
-        //}
-        //const bodies = data.map((body: any) => SmallBody.fromObject(body))
-        //return bodies.map(body => body.toTrajectory())
+    // Apply all filters to the data
+    private applyFilters(bodies: SmallBody[], filters: FiltersContextType['filters']): SmallBody[] {
+        let filtered = [...bodies];
+
+        // Text search filter
+        if (filters.query && filters.query !== '') {
+            const query = filters.query.toLowerCase();
+            filtered = filtered.filter(body => 
+                body.name?.toLowerCase().includes(query) ||
+                body.full_name?.toLowerCase().includes(query)
+            );
+        }
+
+        // Asteroid classes filter
+        //! asteroid classes filter is not working properly
+        /* if (filters.asteroidClasses.length > 0) {
+            filtered = filtered.filter(body => {
+                return filters.asteroidClasses.some(className => {
+                    // This logic might need adjustment based on your actual class structure
+                    // Currently checks if body kind matches any selected class
+                    return body.kind === className || 
+                           (className.includes('=') && this.matchesClassCondition(body, className));
+                });
+            });
+        } */
+
+        return filtered;
+    }
+
+    // Helper method for class matching (adjust based on your actual class structure)
+    /* private matchesClassCondition(body: SmallBody, condition: string): boolean {
+        // Example: if condition is "kind=am", check if body.kind === "am"
+        if (condition.includes('=')) {
+            const [field, value] = condition.split('=');
+            if (field === 'kind') {
+                return body.kind === value;
+            }
+        }
+        return false;
+    } */
+
+    // Sort bodies
+    private sortBodies(bodies: SmallBody[], order: string, ascending: boolean): SmallBody[] {
+        return bodies.sort((a, b) => {
+            let aValue: any = a[order as keyof SmallBody];
+            let bValue: any = b[order as keyof SmallBody];
+
+            // Handle numeric fields
+            if (['a', 'e', 'i', 'w', 'om', 'ma', 'per_y', 'diameter', 'rot_per'].includes(order)) {
+                aValue = aValue ? parseFloat(aValue) : 0;
+                bValue = bValue ? parseFloat(bValue) : 0;
+            }
+
+            // Handle null/undefined values
+            if (aValue == null) return ascending ? 1 : -1;
+            if (bValue == null) return ascending ? -1 : 1;
+
+            // Compare values
+            if (aValue < bValue) return ascending ? -1 : 1;
+            if (aValue > bValue) return ascending ? 1 : -1;
+            return 0;
+        });
+    }
+
+    // Apply pagination
+    private paginateBodies(bodies: SmallBody[], page: number, pageSize: number): SmallBody[] {
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        return bodies.slice(startIndex, endIndex);
+    }
+
+    async getSmallBodies(filters: FiltersContextType['filters'], attempt: number = 0): Promise<Trajectory[]> {
+        try {
+            // Load all data
+            const allBodies = await this.loadAllData();
+            
+            // Apply filters
+            let filteredBodies = this.applyFilters(allBodies, filters);
+            
+            // Apply sorting
+            filteredBodies = this.sortBodies(
+                filteredBodies, 
+                filters.order || 'name', 
+                filters.ascending !== false
+            );
+            
+            // Apply pagination
+            const page = filters.page || 1;
+            const pageSize = filters.pageSize || 50;
+            const paginatedBodies = this.paginateBodies(filteredBodies, page, pageSize);
+            
+            // Convert to trajectories
+            return paginatedBodies.map(body => body.toTrajectory());
+            
+        } catch (error) {
+            console.error('Error in getSmallBodies:', error);
+            if (attempt < 5) {
+                // Reset cache and retry
+                this.isDataLoaded = false;
+                this.allBodies = [];
+                return await this.getSmallBodies(filters, attempt + 1);
+            }
+            return [];
+        }
     }
 
     async getFirstValues(): Promise<Trajectory[]> {
-        const firstValues = await fetch('/sac25/data/first_values.json').then(res => res.json())
-        const columns = firstValues.fields;
-        const rows = firstValues.data;
-        const result = rows.map((row: any) =>
-          row.reduce(
-            (result: any, field: any, index: number) => ({ ...result, [columns[index]]: field }),
-            {}
-          )
-        )
-        return result.map((body: any) => SmallBody.fromObject(body).toTrajectory())
+        // Just return the first page of unfiltered data
+        const bodies = await this.loadAllData();
+        const paginatedBodies = this.paginateBodies(bodies, 1, 50);
+        return paginatedBodies.map(body => body.toTrajectory());
+    }
+
+    // Optional: Method to get total count for pagination
+    async getFilteredCount(filters: FiltersContextType['filters']): Promise<number> {
+        try {
+            const allBodies = await this.loadAllData();
+            const filteredBodies = this.applyFilters(allBodies, filters);
+            return filteredBodies.length;
+        } catch (error) {
+            console.error('Error getting filtered count:', error);
+            return 0;
+        }
     }
 }
 
