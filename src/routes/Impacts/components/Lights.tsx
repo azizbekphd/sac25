@@ -1,12 +1,29 @@
-import { useThree } from "@react-three/fiber"
-import { useEffect } from "react"
+import { useFrame, useThree } from "@react-three/fiber"
+import { useContext, useEffect, useMemo } from "react"
 import { Color } from "three"
+import { ClockContext } from "../contexts/ClockContext"
+import { ImpactDataContext } from "../contexts/ImpactDataContext"
 
 export const Lights = () => {
-  const { scene } = useThree()
+  const clock = useContext(ClockContext)
+  const impactData = useContext(ImpactDataContext)
+  const { scene, camera } = useThree()
   useEffect(() => {
     scene.background = new Color('#87CEEB')
   }, [scene])
+
+  const minCameraDistance = useMemo(() => {
+    return impactData.fireball.radius * 4
+  }, [impactData.fireball.radius])
+
+  useFrame(() => {
+    if (clock.start !== -1) return
+    camera.position.set(
+      Math.max(impactData.asteroid.position[0] + impactData.asteroid.diameter, minCameraDistance),
+      Math.max(impactData.asteroid.position[1] + impactData.asteroid.diameter, minCameraDistance),
+      Math.max(impactData.asteroid.position[2] + impactData.asteroid.diameter, minCameraDistance)
+    )
+  })
 
   return (
     <>

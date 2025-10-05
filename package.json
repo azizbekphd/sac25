@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mapbox/tile-cover": "^3.0.2",
+    "@mapbox/tilebelt": "^2.0.2",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
     "mapbox-gl": "^3.15.0",
@@ -32,6 +33,6 @@
     "globals": "^16.4.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.44.0",
-    "vite": "^7.1.7"
+    "vite": "^7.1.9"
   }
 }
