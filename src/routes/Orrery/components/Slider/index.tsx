@@ -1,8 +1,9 @@
 import { ImpactParamsContext } from "../../contexts";
 import { useContext } from "react";
 import "./index.css";
-const [speedMin, speedMax] = [1, 250];
-const [angleMin, angleMax] = [5, 90];
+import config from "../../globals/config.json";
+const [speedMin, speedMax] = config.impactParams.speedRange;
+const [angleMin, angleMax] = config.impactParams.angleRange;
 
 const Slider: React.FC = () => {
   const impactParams = useContext(ImpactParamsContext);
