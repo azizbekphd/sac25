@@ -1,0 +1,17 @@
+.launch-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 30px;
+    font-size: 28px;
+    background-color: #003800;
+    color: white;
+    border: none;   
+    text-transform: uppercase;
+
+}
+
+.launch-button.active{
+    background-color: #009600;
+}
