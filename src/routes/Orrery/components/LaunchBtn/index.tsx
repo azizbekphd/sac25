@@ -28,7 +28,7 @@ const LaunchBtn: React.FC = () => {
         lng: impactParams.params.lng.toString(),
       }).toString();
 
-      navigate(`/impact?${params}`);
+      navigate(`./impact?${params}`);
     }
   }, [isLaunchActive]);
   return (
