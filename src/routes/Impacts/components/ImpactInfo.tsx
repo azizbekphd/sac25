@@ -50,7 +50,10 @@ const ImpactInfoPanel: React.FC = () => {
       <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }}>
         Impact Info
       </h3>
-      <p><strong>Diameter:</strong> {diameter.toFixed(2)} m</p>
+      <p><strong>Crater diameter:</strong> {data.crater.diameter.toFixed(2)} m</p>
+      <p><strong>Crater depth:</strong> {data.crater.depth.toFixed(2)} m</p>
+      <p><strong>Rim height:</strong> {data.crater.rimHeight.toFixed(2)} m</p>
+      <p><strong>Fireball radius:</strong> {data.fireball.radius.toFixed(2)} m</p>
       <p><strong>Velocity:</strong> {velocityMag.toFixed(2)} m/s</p>
       <p><strong>Angle:</strong> {impactAngle.toFixed(1)}°</p>
       <p>
