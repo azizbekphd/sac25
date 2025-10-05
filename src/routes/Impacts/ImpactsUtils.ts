@@ -39,7 +39,8 @@ export function tileSizeAtZoomLevel(level: number) {
 const g022 = Math.pow(9.81, -0.22)
 const densTarg = 2.835
 export function calculateImpactData({
-  lat, lng, densImp, dImp, vImp, angle
+  // lat, lng,
+  densImp, dImp, vImp, angle
 }: {
   lat: number,
   lng: number,

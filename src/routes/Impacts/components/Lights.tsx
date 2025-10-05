@@ -1,20 +1,20 @@
 import { useFrame, useThree } from "@react-three/fiber"
-import { useContext, useEffect, useMemo } from "react"
+import { useContext, useEffect } from "react"
 import { Color } from "three"
 import { ClockContext } from "../contexts/ClockContext"
-import { ImpactDataContext } from "../contexts/ImpactDataContext"
+// import { ImpactDataContext } from "../contexts/ImpactDataContext"
 
 export const Lights = () => {
   const clock = useContext(ClockContext)
-  const impactData = useContext(ImpactDataContext)
-  const { scene, camera } = useThree()
+  // const impactData = useContext(ImpactDataContext)
+  const { scene } = useThree()
   useEffect(() => {
     scene.background = new Color('#87CEEB')
   }, [scene])
 
-  const minCameraDistance = useMemo(() => {
-    return impactData.fireball.radius * 4
-  }, [impactData.fireball.radius])
+  // const minCameraDistance = useMemo(() => {
+  //   return impactData.fireball.radius * 4
+  // }, [impactData.fireball.radius])
 
   useFrame(() => {
     if (clock.start !== -1) return
