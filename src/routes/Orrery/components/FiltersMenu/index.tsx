@@ -28,7 +28,7 @@ const FiltersMenu: React.FC = memo(() => {
             <MenuSection title={`Asteroid class${filters.asteroidClasses.length > 0 ? ' *' : ''}`}>
                 {/* checkboxes */}
                 {config.filters.asteroidClasses.map((classDef, i) => {
-                    const filter = Filters.classesToFilter(classDef, 'asteroids')
+                    const filter = Filters.classesToFilter(classDef)
                     return (
                         <div key={i} className="row">
                             <input
