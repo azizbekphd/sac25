@@ -3,6 +3,8 @@ import FocusContext, { type FocusContextType } from './FocusContext';
 import TimeControlsContext, { type TimeControlsState } from './TimeControllerContext';
 import FiltersContext, { Filters, type FiltersContextType } from './FiltersContext';
 import LoadingContext, { type LoadingContextType } from './LoadingContext';
+import ImpactParamsContext, { type ImpactParams } from './ImpactParamsContexts';
+
 
 export {
     TrajectoriesContext,
@@ -15,4 +17,6 @@ export {
     type FiltersContextType,
     LoadingContext,
     type LoadingContextType,
+    ImpactParamsContext,
+    type ImpactParams,
 };
